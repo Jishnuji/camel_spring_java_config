@@ -45,11 +45,11 @@ public class FileRouteBuilder extends RouteBuilder {
                         .setBody(simple("'${body}'"))
                         .to("sql:{{query}}")
                     .otherwise()
-                        .throwException(new IllegalFileFormatException("File must be in text or xml only"))
+                        .throwException(new IllegalFileFormatException("Routed file must be in text or xml only"))
                 .end()
                     .filter(header("StatMsg").isEqualTo(true))
                         .process(new StatisticMessage())
-                        .setHeader("subject", simple("File statistic message"))
+                        .setHeader("subject", simple("File statistics message"))
                         .to("{{email.uri}}");
     }
 }

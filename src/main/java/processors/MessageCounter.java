@@ -7,7 +7,7 @@ import org.apache.camel.Processor;
 import java.sql.Timestamp;
 
 public class MessageCounter implements Processor {
-    private int msgCounter, txtFileCounter, xmlFileCounter, illegalFileCounter = 0;
+    private int messageCounter, txtFileCounter, xmlFileCounter, illegalFileCounter = 0;
     private long beginProcessing, endProcessing = 0;
     private Message message;
 
@@ -23,32 +23,36 @@ public class MessageCounter implements Processor {
             illegalFileCounter++;
         }
 
-        setTimeAndSetStatistics(++msgCounter);
+        setProcessingTime(++messageCounter);
     }
 
-    public void setTimeAndSetStatistics(int msgCounter) {
+    public void setProcessingTime(int msgCounter) {
         if (msgCounter == 1) {
             Timestamp begin = new Timestamp(System.currentTimeMillis());
             beginProcessing = begin.getTime();
-        } else if (msgCounter == 3) {
+        } else if (msgCounter == 100) {
             Timestamp end = new Timestamp(System.currentTimeMillis());
             endProcessing = end.getTime();
-            setStatisticsAndResetCounters();
+            setStatistics();
         }
     }
 
-    public void setStatisticsAndResetCounters() {
-        message.setHeader("TotalMsgCount", msgCounter);
+    public void setStatistics() {
+        message.setHeader("TotalMsgCount", messageCounter);
         message.setHeader("TxtFileCount", txtFileCounter);
         message.setHeader("XmlFileCount", xmlFileCounter);
         message.setHeader("IllegalFileCount", illegalFileCounter);
-        message.setHeader("ProcessingTime", endProcessing - beginProcessing);
+        message.setHeader("ProcessingTime", calculateProcessingTime());
         message.setHeader("StatMsg", true);
         resetCounters();
     }
 
+    public long calculateProcessingTime() {
+        return endProcessing - beginProcessing;
+    }
+
     public void resetCounters() {
-        msgCounter = 0;
+        messageCounter = 0;
         txtFileCounter = 0;
         xmlFileCounter = 0;
         illegalFileCounter = 0;

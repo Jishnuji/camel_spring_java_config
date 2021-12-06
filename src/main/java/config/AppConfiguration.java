@@ -22,14 +22,14 @@ public class AppConfiguration {
     @Value("${brokerURL}")
     private String brokerURL;
 
-    @Value("${connFactoryName}")
-    private String connFactoryName;
+    @Value("${connectionFactoryName}")
+    private String connectionFactoryName;
 
     @Value("${dataSourceName}")
     private String dataSourceName;
 
-    @Value("#{${connectionDBProp}}")
-    private Map<String, String> connectionDBProp;
+    @Value("#{${connectionProperties}}")
+    private Map<String, String> connectionProperties;
 
 
     @Bean(name = "transactionManager")
@@ -47,7 +47,7 @@ public class AppConfiguration {
     @Bean(name = "jms")
     public JmsComponent connectToJMS() {
         PoolingConnectionFactory myConnectionFactory = new PoolingConnectionFactory ();
-        myConnectionFactory.setClassName(connFactoryName);
+        myConnectionFactory.setClassName(connectionFactoryName);
         myConnectionFactory.setUniqueName("jms");
         myConnectionFactory.setMaxPoolSize(5);
         myConnectionFactory.setAllowLocalTransactions(true);
@@ -73,7 +73,7 @@ public class AppConfiguration {
 
     public Properties addConnectionProperties() {
         Properties xaDataSourceProp = new Properties();
-        xaDataSourceProp.putAll(connectionDBProp);
+        xaDataSourceProp.putAll(connectionProperties);
         return xaDataSourceProp;
     }
 }

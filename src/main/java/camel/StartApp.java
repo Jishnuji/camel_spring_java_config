@@ -12,11 +12,11 @@ public class StartApp {
     public static void main(String[] args) {
         ApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfiguration.class);
-        
+
         try {
             Thread.sleep(7000);
         } catch (InterruptedException failure) {
-            LOG.error("Some error occurred: " + failure);
+            LOG.error("Current thread was interrupted. " + failure);
         }
     }
 }
