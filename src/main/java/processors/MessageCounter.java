@@ -26,11 +26,11 @@ public class MessageCounter implements Processor {
         setProcessingTime(++messageCounter);
     }
 
-    public void setProcessingTime(int msgCounter) {
-        if (msgCounter == 1) {
+    public void setProcessingTime(int messageCounter) {
+        if (messageCounter == 1) {
             Timestamp begin = new Timestamp(System.currentTimeMillis());
             beginProcessing = begin.getTime();
-        } else if (msgCounter == 100) {
+        } else if (messageCounter == 100) {
             Timestamp end = new Timestamp(System.currentTimeMillis());
             endProcessing = end.getTime();
             setStatistics();
